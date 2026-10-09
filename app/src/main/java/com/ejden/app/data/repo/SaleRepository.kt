@@ -49,7 +49,7 @@ class SaleRepository(private val db: AppDatabase) {
                 line.quantity <= 0.0 ||
                 kotlin.math.abs(scaledQuantity - kotlin.math.round(scaledQuantity)) > 1e-6 ||
                 line.unitPrice < 0L ||
-                line.unitCost < 0L
+                line.unitCost?.let { it < 0L } == true
         }
         if (invalidLine || discount < 0L || paid < 0L) {
             return@withTransaction SaleResult.InvalidInput
